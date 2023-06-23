@@ -40,7 +40,7 @@ if not retConexao[0]:
 
 # Guarda o objeto da conexão 
 connDB = retConexao[1]
-
+'''
 # ------------------------------------------------------------
 # Inserindo os CAMPI
 dictCampus = dict()
@@ -62,7 +62,7 @@ for cotaMEC in setCotasMEC:
         print(retorno[1])
         continue
     dictCotasMEC[cotaMEC] = retorno[1]
-
+'''
 # ------------------------------------------------------------
 # Inserindo os COTAS_SISTEC
 dictCotasSISTEC = dict()
