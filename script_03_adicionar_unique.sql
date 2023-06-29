@@ -15,3 +15,7 @@ alter table alunos.situacoes
 
 alter table alunos.situacoes_sistemicas 
 	add constraint un_situacao_sistemica unique (situacao_sistemica);
+
+
+#select table_name, table_schema from information_schema.tables where table_type = 'BASE TABLE' and table_schema not in ('pg_catalog', 'information_schema')
+#select column_name,data_type, table_name from information_schema.columns where table_schema not in ('pg_catalog', 'information_schema') and table_name = 'alunos' order by table_name, ordinal_position
