@@ -1,5 +1,6 @@
 -- ----------------------------------------------------------------------
--- Criando o banco IFRN create database ifrn;
+-- Criando o banco IFRN
+create database ifrn;
 
 -- ----------------------------------------------------------------------
 -- Criando o Schema ALUNOS
@@ -46,7 +47,7 @@ create table alunos.linhas_pesquisa (
 -- Criando a tabela COTAS_MEC
 create table alunos.cotas_mec (
 	id_cota_mec	serial,
-	cota_mec	varchar(255),
+	cota_mec	varchar(50),
 	constraint pk_cotas_mec primary key (id_cota_mec)
 );
 

@@ -17,9 +17,12 @@ if not retLeitura[0]:
     sys.exit()
 
 # ------------------------------------------------------------
-# Tratando os dados lidos 
-dados_lidos     = retLeitura[1]
+# Tratando os dados lidos
+print('\nTratando os Dados Lidos...')
+dados_lidos = retLeitura[1]
 
+# Gerando SETS com os dados a serem inseridos nas tabelas 
+# exceto na tabela ALUNOS
 setCampi               = set(map(lambda c: c['campus'], dados_lidos.values()))
 setCotasMEC            = set(map(lambda c: c['cota_mec'], dados_lidos.values()))
 setCotasSISTEC         = set(map(lambda c: c['cota_sistec'], dados_lidos.values()))
@@ -40,34 +43,38 @@ if not retConexao[0]:
 
 # Guarda o objeto da conexão 
 connDB = retConexao[1]
-'''
+
 # ------------------------------------------------------------
-# Inserindo os CAMPI
-dictCampus = dict()
+# Inserindo os dados na tabela CAMPI
+print('\nInserindo os dados na tabela CAMPI...')
+dictCampi = dict()
 for campus in setCampi:
-    if not campus: continue
+    if not campus: campus = '-----'
     retorno = insereCampus(campus, connDB)
     if not retorno[0]:
         print(retorno[1])
         continue
-    dictCampus[campus] = retorno[1]
-'''
+    dictCampi[campus] = retorno[1]
+
 # ------------------------------------------------------------
-# Inserindo os COTAS_MEC
+# Inserindo os dados na tabela COTAS_MEC
+print('\nInserindo os dados na tabela COTAS_MEC...')
 dictCotasMEC = dict()
 for cotaMEC in setCotasMEC:
-    if not cotaMEC: continue
+    if not cotaMEC: cotaMEC = '-----'
+
     retorno = insereCotasMEC(cotaMEC, connDB)
     if not retorno[0]:
         print(retorno[1])
         continue
     dictCotasMEC[cotaMEC] = retorno[1]
-'''
+
 # ------------------------------------------------------------
-# Inserindo os COTAS_SISTEC
+# Inserindo os dados na tabela COTAS_SISTEC
+print('\nInserindo os dados na tabela COTAS_SISTEC...')
 dictCotasSISTEC = dict()
 for cotaSISTEC in setCotasSISTEC:
-    if not cotaSISTEC: continue
+    if not cotaSISTEC: cotaSISTEC = '-----'
     retorno = insereCotasSISTEC(cotaSISTEC, connDB)
     if not retorno[0]:
         print(retorno[1])
@@ -75,10 +82,11 @@ for cotaSISTEC in setCotasSISTEC:
     dictCotasSISTEC[cotaSISTEC] = retorno[1]
 
 # ------------------------------------------------------------
-# Inserindo os CURSOS
+# Inserindo os dados na tabela CURSOS
+print('\nInserindo os dados na tabela CURSOS...')
 dictCursos = dict()
 for curso in setCursos:
-    if not curso: continue
+    if not curso: curso = '-----'
     retorno = insereCursos(curso, connDB)
     if not retorno[0]:
         print(retorno[1])
@@ -86,10 +94,11 @@ for curso in setCursos:
     dictCursos[curso] = retorno[1]
 
 # ------------------------------------------------------------
-# Inserindo os LINHAS_PESQUISA
+# Inserindo os dados na tabela LINHAS_PESQUISA
+print('\nInserindo os dados na tabela LINHAS_PESQUISA...')
 dictLinhasPesquisa = dict()
 for linhaPesquisa in setLinhasPesquisa:
-    if not linhaPesquisa: continue
+    if not linhaPesquisa: linhaPesquisa = '-----'
     retorno = insereLinhasPesquisa(linhaPesquisa, connDB)
     if not retorno[0]:
         print(retorno[1])
@@ -97,10 +106,11 @@ for linhaPesquisa in setLinhasPesquisa:
     dictLinhasPesquisa[linhaPesquisa] = retorno[1]
 
 # ------------------------------------------------------------
-# Inserindo os SITUACOES
+# Inserindo os dados na tabela SITUACOES
+print('\nInserindo os dados na tabela SITUACOES...')
 dictSituacoes = dict()
 for situacao in setSituacoes:
-    if not situacao: continue
+    if not situacao: situacao = '-----'
     retorno = insereSituacoes(situacao, connDB)
     if not retorno[0]:
         print(retorno[1])
@@ -108,10 +118,11 @@ for situacao in setSituacoes:
     dictSituacoes[situacao] = retorno[1]
 
 # ------------------------------------------------------------
-# Inserindo os SITUACOES_SISTEMICAS
+# Inserindo os dados na tabela SITUACOES_SISTEMICAS
+print('\nInserindo os dados na tabela SITUACOES_SISTEMICAS...')
 dictSituacoesSistemicas = dict()
 for situacaoSistemica in setSituacoesSistemicas:
-    if not situacaoSistemica: continue
+    if not situacaoSistemica: situacaoSistemica = '-----'
     retorno = insereSituacoesSistemicas(situacaoSistemica, connDB)
     if not retorno[0]:
         print(retorno[1])
@@ -119,6 +130,34 @@ for situacaoSistemica in setSituacoesSistemicas:
     dictSituacoesSistemicas[situacaoSistemica] = retorno[1]
 
 # ------------------------------------------------------------
-'''
+# Inserindo os dados na tabela ALUNOS
+print('\nInserindo os dados na tabela ALUNOS...')
+tupleCampos = tuple(['curriculo_lattes'    , 'id_cota_mec', 'matricula_regular', 
+                     'id_situacao'          , 'nome'       , 'id_curso'         , 
+                     'id_situacao_sistemica', 'matricula'  , 'id_linha_pesquisa', 
+                     'id_cota_sistec'       , 'campus'])
+for k,v in dados_lidos.items():
+    if dados_lidos[k]['cota_mec']           == '': dados_lidos[k]['cota_mec']           = '-----'
+    if dados_lidos[k]['cota_sistec']        == '': dados_lidos[k]['cota_sistec']        = '-----'
+    if dados_lidos[k]['curso']              == '': dados_lidos[k]['curso']              = '-----'
+    if dados_lidos[k]['linha_pesquisa']     == '': dados_lidos[k]['linha_pesquisa']     = '-----'
+    if dados_lidos[k]['situacao']           == '': dados_lidos[k]['situacao']           = '-----'
+    if dados_lidos[k]['situacao_sistemica'] == '': dados_lidos[k]['situacao_sistemica'] = '-----'
+
+    dados_lidos[k]['cota_mec']           = dictCotasMEC[dados_lidos[k]['cota_mec']]
+    dados_lidos[k]['situacao']           = dictSituacoes[dados_lidos[k]['situacao']]
+    dados_lidos[k]['curso']              = dictCursos[dados_lidos[k]['curso']]
+    dados_lidos[k]['situacao_sistemica'] = dictSituacoesSistemicas[dados_lidos[k]['situacao_sistemica']]
+    dados_lidos[k]['matricula_regular']  = bool(dados_lidos[k]['matricula_regular'])
+    dados_lidos[k]['linha_pesquisa']     = dictLinhasPesquisa[dados_lidos[k]['linha_pesquisa']]
+    dados_lidos[k]['cota_sistec']        = dictCotasSISTEC[dados_lidos[k]['cota_sistec']]
+
+    tupleValores = tuple(v.values())
+
+    retorno = insereAlunos(tupleCampos, tupleValores, connDB)
+
+    if not retorno[0]: print(retorno[1])
+
+# ------------------------------------------------------------
 # Fechando a conexão com o Database Server
 connDB.close()
